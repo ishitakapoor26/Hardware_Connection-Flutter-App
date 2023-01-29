@@ -1,7 +1,7 @@
 // library send_messagee;
 import 'dart:async';
 import 'dart:convert';
-
+import 'dart:core';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class _ChatPageState extends State<ChatPage>
     with SingleTickerProviderStateMixin {
   BluetoothConnection? connection;
   bool isConnecting = true;
-  bool _flag = true;
+  List<int> flag= [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
   bool get isConnected => connection != null && connection!.isConnected;
   Color clickedColor = Colors.blue;
@@ -159,6 +159,38 @@ class _ChatPageState extends State<ChatPage>
                     Button('y'),
                   ],
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                          onPressed: (){
+                            _sendMessage('rst');
+                          },
+                          child: Text('Reset',
+                          style: TextStyle(
+                            color: Colors.white
+                          ),),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue
+                        ),
+                      ),
+                  ElevatedButton(
+                    onPressed: (){
+                      _sendMessage('clr');
+                    },
+                    child: Text('Clear',
+                      style: TextStyle(
+                          color: Colors.white
+                      ),),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue
+                    ),
+                  ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -167,19 +199,28 @@ class _ChatPageState extends State<ChatPage>
     );
   }
   Widget Button(String message){
+    int x= message.codeUnits[0]-97;
+    print(x);
     return SizedBox(
       height: MediaQuery.of(context).size.height/15,
       width: MediaQuery.of(context).size.height/15,
       child: ElevatedButton(
         onPressed: (){
-          _sendMessage(message);
+          if(flag[x]==1){
+          _sendMessage('$message$message');
           setState(() {
-            _flag= !_flag;
+            flag[x]=0;
           });
+          }else {
+            _sendMessage(message);
+            setState(() {
+              flag[x] = 1;
+            });
+          }
         },
         child: Text(""),
         style: ElevatedButton.styleFrom(
-          backgroundColor: _flag? Colors.blue:Colors.green,
+          backgroundColor: flag[x]==0? Colors.blue:Colors.green,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50),
           ),
