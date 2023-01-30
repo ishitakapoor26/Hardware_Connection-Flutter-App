@@ -166,7 +166,7 @@ class _ChatPageState extends State<ChatPage>
                     children: [
                       ElevatedButton(
                           onPressed: (){
-                            _sendMessage('rst');
+                            _sendMessage('0');
                           },
                           child: Text('Reset',
                           style: TextStyle(
@@ -178,7 +178,11 @@ class _ChatPageState extends State<ChatPage>
                       ),
                   ElevatedButton(
                     onPressed: (){
-                      _sendMessage('clr');
+                      _sendMessage('1');
+                      int i;
+                      setState(() {
+                      for(i=0;i<25;i++) flag[i]=0;
+                      });
                     },
                     child: Text('Clear',
                       style: TextStyle(
@@ -207,7 +211,7 @@ class _ChatPageState extends State<ChatPage>
       child: ElevatedButton(
         onPressed: (){
           if(flag[x]==1){
-          _sendMessage('$message$message');
+          _sendMessage(message.toUpperCase());
           setState(() {
             flag[x]=0;
           });
